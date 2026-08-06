@@ -5542,7 +5542,6 @@ export async function getAppointment(
         }
         throw new Error("Error");
       }
-
       //#################################### acValidarEntrada AUTO #################################
       // Auto mode here: click Solicitar Cita as soon as the button is visible.
       console.log(
@@ -6023,7 +6022,7 @@ export async function getAppointment(
       } catch (error) {
         console.log("Observations not asked");
       }
-      await sleep(2650);
+      await sleep(3000);
       // click
       await page.evaluate((selector) => {
         const element = document.querySelector(selector);
@@ -6485,253 +6484,25 @@ export async function getAppointment(
           }
         })
         .catch(() => {});
-
+      // Work here
       stage = "WAIT_CONFIRMATION";
-      await waitForManualOtpAndFinalConfirmation(page, data);
+      console.log("#################### Bro bro I am here ########");
+
+      await sleep(90000);
+      await sleep(90000);
+      await sleep(90000);
+      // await waitForManualOtpAndFinalConfirmation(page, data);
 
       await sendFinalAppointmentTelegramAndHold(
         page,
         data,
         "normal OTP confirmation",
       );
-
-      if (false) {
-        let finalCodeAttempts = 0;
-        let finalConfirmed = false;
-        while (finalCodeAttempts < 2) {
-          await page
-            .evaluate(() => {
-              for (const selector of ["#chkTotal", "#enviarCorreo"]) {
-                const el = document.querySelector(selector);
-                if (!el) continue;
-                if ("checked" in el && !el.checked) {
-                  el.click();
-                } else if (!("checked" in el)) {
-                  el.click();
-                }
-              }
-            })
-            .catch(() => {});
-
-          await page.waitForFunction(
-            () => {
-              const input = document.querySelector("#txtCodigoVerificacion");
-              return input && input.value.trim().length > 4;
-            },
-            { timeout: STEP_TIMEOUT_MS },
-          );
-
-          stage = "WAIT_CONFIRMATION";
-          await Promise.all([
-            page
-              .waitForNavigation({
-                waitUntil: "domcontentloaded",
-                timeout: LONG_STEP_TIMEOUT_MS,
-              })
-              .catch(() => null),
-            cursor.click("#btnConfirmar", {
-              moveDelay: 0,
-              randomizeMoveDelay: false,
-            }),
-          ]);
-          await throwIfBadPage(page, "after final confirmation submit", {
-            data,
-            stage,
-          });
-
-          const finalDetails = await waitForFinalConfirmationOrRetry(
-            page,
-            LONG_STEP_TIMEOUT_MS,
-          );
-          console.log(
-            `FINAL_CONFIRMATION_STATUS: ok=${finalDetails.ok} final=${finalDetails.finalDetected} confirmButton=${finalDetails.hasConfirmButton} codeInput=${finalDetails.hasCodeInput} codeError=${finalDetails.codeError} url=${finalDetails.url}`,
-          );
-          console.log(
-            `FINAL_CONFIRMATION_TEXT_PREVIEW: ${finalDetails.textPreview}`,
-          );
-
-          if (finalDetails.ok) {
-            finalConfirmed = true;
-            break;
-          }
-
-          if (finalDetails.requestRejected) {
-            await throwIfBadPage(page, "after final confirmation submit", {
-              data,
-              stage,
-            });
-          }
-
-          const canRetryCode =
-            finalDetails.hasConfirmButton && finalDetails.hasCodeInput;
-          if (!canRetryCode) {
-            break;
-          }
-
-          await sendMessageToGroup(
-            data["owner"],
-            `Error in Codigo try again for: CITADO: ${data["nombre"]} - ${data["docId"]}\n\nPhone: ${phone}\nEmail: ${email}`,
-          );
-          finalCodeAttempts += 1;
-          await page
-            .reload({
-              waitUntil: "domcontentloaded",
-              timeout: LONG_STEP_TIMEOUT_MS,
-            })
-            .catch(() => null);
-        }
-
-        if (!finalConfirmed) {
-          await sendMessageToGroup(
-            data["owner"],
-            `Number of codigo tries exceeded for: CITADO: ${data["nombre"]} - ${data["docId"]}\n\nPhone: ${phone}\nEmail: ${email}`,
-          );
-          throw new Error("CONFIRM_CODE_ATTEMPTS_EXCEEDED");
-        }
-
-        const finalText = await extractAppointmentConfirmationText(page);
-        await sendMessageToGroup(
-          data["owner"],
-          `CITA CONFIRMADA\n\nTramite: ${data["tramiteLabel"]}\nProvincia: ${data["provinciaLabel"]}\nCITADO: ${data["nombre"]} - ${data["docId"]}\nPhone: ${phone}\nEmail: ${email}\n\n${finalText || "Final confirmation page loaded, but text extraction returned empty."}`,
-        );
-        console.log("Done Done Done");
-        try {
-          page?.off("request", requestHandler);
-        } catch (cleanupError) {}
-        await closeBrowserFast(browser, "FINAL_CONFIRMED");
-        await closeAnonymizedProxyFast(proxyUrl, "FINAL_CONFIRMED");
-        await deleteProfileFolderFast(profileDir, "FINAL_CONFIRMED");
-        return "done";
-      }
-
-      /*
-// Legacy PDF/SMS confirmation path disabled. The active path above sends the final
-// confirmation page text to Telegram and returns before this block.
-// give time for verification
-// await page.waitForFunction(
-//   () => {
-//     const input = document.querySelector("#txtCodigoVerificacion");
-//     return input && input.value.trim() !== "";
-//   },
-//   { timeout: STEP_TIMEOUT_MS },
-// );
-// test chunck
-  let confattempt = 0;
-    while (confattempt < 2) {
-        // cick buttons
-        await page.locator('#chkTotal').click();
-        await page.locator('#enviarCorreo').click();
-        // give time for verification
-        await page.waitForFunction(
-          () => {
-            const input = document.querySelector('#txtCodigoVerificacion');
-            return input && input.value.trim().length > 4;
-          },
-          { timeout: STEP_TIMEOUT_MS }
-        );
-        await Promise.all([
-          page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-          cursor.click('#btnConfirmar', {
-            moveDelay: 0,
-            randomizeMoveDelay: false,
-          }),
-        ]);
-        if (await checkTitleBlocked(page)) {
-          throw new Error('Fingerprint detected');
-        }
-        try {
-          await page.waitForSelector('#btnImprimir', { timeout: 2000 });
-          break;
-        } catch (error) {
-          try {
-            await page.waitForSelector('#btnConfirmar', { timeout: 2000 });
-          } catch (error) {
-            confattempt = 5;
-          }
-          await sendMessageToGroup(
-            data['owner'],
-            `Error in Codigo try again for : CITADO: ${data['nombre']}  - ${data['docId']}\n\n🏢 Phone: ${phone}\n\n Email: ${email}`
-          );
-          confattempt += 1;
-          await page.reload();
-        }
-      }
-      
-    if (confattempt > 2) {
-        await sendMessageToGroup(
-          data['owner'],
-          `Number of codigo try exceded for : CITADO: ${data['nombre']}  - ${data['docId']}\n\n🏢 Phone: ${phone}\n\n Email: ${email}`
-        );
-        continue;
-      }
-      // delete data save pdf send notification
-      const today = new Date();
-      const day = String(today.getDate()).padStart(2, '0'); // Ensure 2 digits
-      const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-      const year = today.getFullYear();
-      const ownerFolder = `./pdfs/${data['owner']}`;
-      if (!fs.existsSync(ownerFolder)) {
-        fs.mkdirSync(ownerFolder);
-      }
-      const folderPath = `${ownerFolder}/${day}-${month}-${year}`;
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath);
-      }
-      await page.pdf({
-        path: `${folderPath}/${data['nombre'].replace(/\s+/g, '-')}-${
-          data['docId']
-        }.pdf`, // File path to save the PDF
-        format: 'A4', // Paper format (e.g., 'A4', 'Letter')
-        printBackground: true, // Include background graphics
-        margin: {
-          top: '20px',
-          bottom: '20px',
-          left: '20px',
-          right: '20px',
-        },
-      });
-      // Send message
-      let citaConfirmationDatos = [];
-      try {
-        citaConfirmationDatos = await Promise.all([
-          page.$eval('#justificanteFinal', (el) => el.textContent.trim()),
-          page.$eval(
-            '#mainWindow > div > div.mf-layout--main > section > div.mf-main--content.ac-custom-content > form > div:nth-child(8) > fieldset > div:nth-child(2) > span.mf-psdinput.mf-input__xl.select2-container',
-            (el) => el.textContent.trim()
-          ), // direction
-          page.$eval(
-            '#mainWindow > div > div.mf-layout--main > section > div.mf-main--content.ac-custom-content > form > div:nth-child(8) > fieldset > div:nth-child(3) > span.mf-psdinput',
-            (el) => el.textContent.trim()
-          ), // cita date
-          page.$eval(
-            '#mainWindow > div > div.mf-layout--main > section > div.mf-main--content.ac-custom-content > form > div:nth-child(8) > fieldset > div:nth-child(4) > span.mf-psdinput',
-            (el) => el.textContent.trim()
-          ), // hora cita
-          page.$eval(
-            '#mainWindow > div > div.mf-layout--main > section > div.mf-main--content.ac-custom-content > form > div:nth-child(8) > fieldset > div:nth-child(5) > span.mf-psdinput.mf-input__m.select2-container',
-            (el) => el.textContent.trim()
-          ), // Mesa
-        ]);
-      } catch (error) {
-        console.log('fail fetch cita datos');
-      }
-      await sendMessageToGroup(
-        data['owner'],
-        `🔔Cita encontrada🔔\n\n📝 Tramite: ${data['tramiteLabel']}\n\n📍 Provincia: ${data['provinciaLabel']}\n\n✅ Nº de Justificante de cita: ${citaConfirmationDatos[0]}\n\n👤 CITADO: ${data['nombre']}  - ${data['docId']}\n\n🏢 Dirección: ${citaConfirmationDatos[1]}\n\n📅 Día de la cita: ${citaConfirmationDatos[2]}\n\n⌚ Hora cita: ${citaConfirmationDatos[3]}\n\nMesa: ${citaConfirmationDatos[4]}`
-      );
-      await sendPdfToGroup(
-        data['owner'],
-        `${folderPath}/${data['nombre'].replace(/\s+/g, '-')}-${
-          data['docId']
-        }.pdf`
-      );
-
-    await waitForAcGrabarCitaFinalAndNotify(page, data, phone, email, usuarioClave, STEP_TIMEOUT_MS);
-      await waitForAcGrabarCitaFinalAndNotify(page, data, phone, email, usuarioClave, STEP_TIMEOUT_MS);
-      console.log("Done Done Done");
-      return "done";
-*/
     } catch (error) {
+      console.log("Check check check");
+      await sleep(90000);
+      await sleep(90000);
+      await sleep(90000);
       const rawReason = String(error?.message || error || "UNKNOWN_ERROR");
       const reason = forcedAbortReason || rawReason;
       if (forcedAbortReason && rawReason !== forcedAbortReason) {
