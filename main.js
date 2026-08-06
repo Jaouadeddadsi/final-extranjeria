@@ -10,60 +10,59 @@ const BOT_BUILD_ID = "BOT_BASE_CALENDARIO_DOM_CAPTCHA_PARALLEL_2026-07-21";
 console.log(`BOT_BUILD_ID: ${BOT_BUILD_ID}`);
 
 const provinciesList = {
-  'A Coruña': '/icpplus/citar?p=15&locale=es',
-  Albacete: '/icpplus/citar?p=2&locale=es',
-  Alicante: '/icpco/citar?p=3&locale=es',
-  Almería: '/icpplus/citar?p=4&locale=es',
-  Araba: '/icpplus/citar?p=1&locale=es',
-  Asturias: '/icpplus/citar?p=33&locale=es',
-  Ávila: '/icpplus/citar?p=5&locale=es',
-  Badajoz: '/icpplus/citar?p=6&locale=es',
-  Barcelona: '/icpplustieb/citar?p=8&locale=es',
-  Bizkaia: '/icpplus/citar?p=48&locale=es',
-  Burgos: '/icpplus/citar?p=9&locale=es',
-  Cáceres: '/icpplus/citar?p=10&locale=es',
-  Cádiz: '/icpplus/citar?p=11&locale=es',
-  Cantabria: '/icpplus/citar?p=39&locale=es',
-  Castellón: '/icpplus/citar?p=12&locale=es',
-  Ceuta: '/icpplus/citar?p=51&locale=es',
-  'Ciudad Real': '/icpplus/citar?p=13&locale=es',
-  Córdoba: '/icpplus/citar?p=14&locale=es',
-  Cuenca: '/icpplus/citar?p=16&locale=es',
-  Gipuzkoa: '/icpplus/citar?p=20&locale=es',
-  Girona: '/icpplus/citar?p=17&locale=es',
-  Granada: '/icpplus/citar?p=18&locale=es',
-  Guadalajara: '/icpplus/citar?p=19&locale=es',
-  Huelva: '/icpplus/citar?p=21&locale=es',
-  Huesca: '/icpplus/citar?p=22&locale=es',
-  'Illes Balears': '/icpco/citar?p=7&locale=es',
-  Jaén: '/icpplus/citar?p=23&locale=es',
-  'La Rioja': '/icpplus/citar?p=26&locale=es',
-  'Las Palmas': '/icpco/citar?p=35&locale=es',
-  León: '/icpplus/citar?p=24&locale=es',
-  Lleida: '/icpplus/citar?p=25&locale=es',
-  Lugo: '/icpplus/citar?p=27&locale=es',
-  Madrid: '/icpplustiem/citar?p=28&locale=es',
-  Málaga: '/icpco/citar?p=29&locale=es',
-  Melilla: '/icpplus/citar?p=52&locale=es',
-  Murcia: '/icpplus/citar?p=30&locale=es',
-  Navarra: '/icpplus/citar?p=31&locale=es',
-  Ourense: '/icpplus/citar?p=32&locale=es',
-  Palencia: '/icpplus/citar?p=34&locale=es',
-  Pontevedra: '/icpplus/citar?p=36&locale=es',
-  Salamanca: '/icpplus/citar?p=37&locale=es',
-  'S.Cruz Tenerife': '/icpco/citar?p=38&locale=es',
-  Segovia: '/icpplus/citar?p=40&locale=es',
-  Sevilla: '/icpplus/citar?p=41&locale=es',
-  Soria: '/icpplus/citar?p=42&locale=es',
-  Tarragona: '/icpplus/citar?p=43&locale=es',
-  Teruel: '/icpplus/citar?p=44&locale=es',
-  Toledo: '/icpplus/citar?p=45&locale=es',
-  Valencia: '/icpplus/citar?p=46&locale=es',
-  Valladolid: '/icpplus/citar?p=47&locale=es',
-  Zamora: '/icpplus/citar?p=49&locale=es',
-  Zaragoza: '/icpplus/citar?p=50&locale=es',
+  "A Coruña": "/icpplus/citar?p=15&locale=es",
+  Albacete: "/icpplus/citar?p=2&locale=es",
+  Alicante: "/icpco/citar?p=3&locale=es",
+  Almería: "/icpplus/citar?p=4&locale=es",
+  Araba: "/icpplus/citar?p=1&locale=es",
+  Asturias: "/icpplus/citar?p=33&locale=es",
+  Ávila: "/icpplus/citar?p=5&locale=es",
+  Badajoz: "/icpplus/citar?p=6&locale=es",
+  Barcelona: "/icpplustieb/citar?p=8&locale=es",
+  Bizkaia: "/icpplus/citar?p=48&locale=es",
+  Burgos: "/icpplus/citar?p=9&locale=es",
+  Cáceres: "/icpplus/citar?p=10&locale=es",
+  Cádiz: "/icpplus/citar?p=11&locale=es",
+  Cantabria: "/icpplus/citar?p=39&locale=es",
+  Castellón: "/icpplus/citar?p=12&locale=es",
+  Ceuta: "/icpplus/citar?p=51&locale=es",
+  "Ciudad Real": "/icpplus/citar?p=13&locale=es",
+  Córdoba: "/icpplus/citar?p=14&locale=es",
+  Cuenca: "/icpplus/citar?p=16&locale=es",
+  Gipuzkoa: "/icpplus/citar?p=20&locale=es",
+  Girona: "/icpplus/citar?p=17&locale=es",
+  Granada: "/icpplus/citar?p=18&locale=es",
+  Guadalajara: "/icpplus/citar?p=19&locale=es",
+  Huelva: "/icpplus/citar?p=21&locale=es",
+  Huesca: "/icpplus/citar?p=22&locale=es",
+  "Illes Balears": "/icpco/citar?p=7&locale=es",
+  Jaén: "/icpplus/citar?p=23&locale=es",
+  "La Rioja": "/icpplus/citar?p=26&locale=es",
+  "Las Palmas": "/icpco/citar?p=35&locale=es",
+  León: "/icpplus/citar?p=24&locale=es",
+  Lleida: "/icpplus/citar?p=25&locale=es",
+  Lugo: "/icpplus/citar?p=27&locale=es",
+  Madrid: "/icpplustiem/citar?p=28&locale=es",
+  Málaga: "/icpco/citar?p=29&locale=es",
+  Melilla: "/icpplus/citar?p=52&locale=es",
+  Murcia: "/icpplus/citar?p=30&locale=es",
+  Navarra: "/icpplus/citar?p=31&locale=es",
+  Ourense: "/icpplus/citar?p=32&locale=es",
+  Palencia: "/icpplus/citar?p=34&locale=es",
+  Pontevedra: "/icpplus/citar?p=36&locale=es",
+  Salamanca: "/icpplus/citar?p=37&locale=es",
+  "S.Cruz Tenerife": "/icpco/citar?p=38&locale=es",
+  Segovia: "/icpplus/citar?p=40&locale=es",
+  Sevilla: "/icpplus/citar?p=41&locale=es",
+  Soria: "/icpplus/citar?p=42&locale=es",
+  Tarragona: "/icpplus/citar?p=43&locale=es",
+  Teruel: "/icpplus/citar?p=44&locale=es",
+  Toledo: "/icpplus/citar?p=45&locale=es",
+  Valencia: "/icpplus/citar?p=46&locale=es",
+  Valladolid: "/icpplus/citar?p=47&locale=es",
+  Zamora: "/icpplus/citar?p=49&locale=es",
+  Zaragoza: "/icpplus/citar?p=50&locale=es",
 };
-
 
 // Max concurrent workers
 const maxConcurrant = Number(process.env.MAX_CONCURRENT || 10);
@@ -72,7 +71,7 @@ const maxConcurrant = Number(process.env.MAX_CONCURRENT || 10);
 // const provinciaNames = ["Barcelona"];
 // const provinciaNames = ["Madrid", "Soria"];
 // const provinciaNames = []; // all provinces
-const provinciaNames = ["madrid"];
+const provinciaNames = ["murcia"]; //barcelona
 
 // Optional office filters. Put one word or part of each office name.
 // Preferidas: if any are set, only offices matching at least one word are accepted.
@@ -151,7 +150,9 @@ function normalizeProvinceName(value) {
 
 function getSelectedProvinceNames() {
   if (process.env.PROVINCIAS && process.env.PROVINCIAS.trim()) {
-    return process.env.PROVINCIAS.split(",").map((item) => item.trim()).filter(Boolean);
+    return process.env.PROVINCIAS.split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
   return provinciaNames;
 }
@@ -167,8 +168,13 @@ function normalizeListInput(value) {
 }
 
 function getSelectedOfficeFilters() {
-  const preferredFromEnv = process.env.OFICINAS || process.env.OFICINA || process.env.OFICINA_PREFERIDA || "";
-  const excludedFromEnv = process.env.OFICINAS_EXCLUIDAS || process.env.OFICINA_EXCLUIDA || "";
+  const preferredFromEnv =
+    process.env.OFICINAS ||
+    process.env.OFICINA ||
+    process.env.OFICINA_PREFERIDA ||
+    "";
+  const excludedFromEnv =
+    process.env.OFICINAS_EXCLUIDAS || process.env.OFICINA_EXCLUIDA || "";
   return {
     preferidas: normalizeListInput(preferredFromEnv || oficinasPreferidas),
     excluidas: normalizeListInput(excludedFromEnv || oficinasExcluidas),
@@ -184,22 +190,31 @@ function resolveProvincia(input) {
   const url = provinceUrlByName[normalized];
   if (!url) {
     const available = Object.keys(provinceUrlByName).sort().join(", ");
-    throw new Error(`Provincia no encontrada: "${value}". Opciones: ${available}`);
+    throw new Error(
+      `Provincia no encontrada: "${value}". Opciones: ${available}`,
+    );
   }
   return url;
 }
 
-const provincias = getSelectedProvinceNames().map(resolveProvincia).filter(Boolean);
+const provincias = getSelectedProvinceNames()
+  .map(resolveProvincia)
+  .filter(Boolean);
 
 function isPendingRecord(data) {
-  const status = String(data?.status || "pending").trim().toLowerCase();
+  const status = String(data?.status || "pending")
+    .trim()
+    .toLowerCase();
   return status === "pending";
 }
 
 function applyRuntimeFilters(datos, selectedOfficeFilters) {
   let filtered = datos.filter(isPendingRecord);
 
-  if (selectedOfficeFilters.preferidas.length > 0 || selectedOfficeFilters.excluidas.length > 0) {
+  if (
+    selectedOfficeFilters.preferidas.length > 0 ||
+    selectedOfficeFilters.excluidas.length > 0
+  ) {
     filtered = filtered.map((item) => ({
       ...item,
       oficinasPreferidas: selectedOfficeFilters.preferidas,
@@ -208,7 +223,9 @@ function applyRuntimeFilters(datos, selectedOfficeFilters) {
   }
 
   if (provincias.length > 0) {
-    filtered = filtered.filter((item) => provincias.includes(item["provincia"]));
+    filtered = filtered.filter((item) =>
+      provincias.includes(item["provincia"]),
+    );
   }
 
   return filtered;
@@ -247,17 +264,31 @@ async function main() {
   }
   fs.mkdirSync("profiles", { recursive: true });
   // read proxies
-  const proxies = await readFileLines("./proxies/proxies.txt").catch((error) => {
-    console.error("Failed to read proxies/proxies.txt:", error?.message || error);
-    return [];
-  });
+  const proxies = await readFileLines("./proxies/proxies.txt").catch(
+    (error) => {
+      console.error(
+        "Failed to read proxies/proxies.txt:",
+        error?.message || error,
+      );
+      return [];
+    },
+  );
   if (proxies.length === 0) {
-    console.warn("No proxies loaded. Workers will launch without a configured proxy.");
+    console.warn(
+      "No proxies loaded. Workers will launch without a configured proxy.",
+    );
   }
   const selectedOfficeFilters = getSelectedOfficeFilters();
-  if (selectedOfficeFilters.preferidas.length > 0 || selectedOfficeFilters.excluidas.length > 0) {
-    console.log(`OFICINAS_PREFERIDAS_CONFIG: ${selectedOfficeFilters.preferidas.join(", ") || "(ninguna)"}`);
-    console.log(`OFICINAS_EXCLUIDAS_CONFIG: ${selectedOfficeFilters.excluidas.join(", ") || "(ninguna)"}`);
+  if (
+    selectedOfficeFilters.preferidas.length > 0 ||
+    selectedOfficeFilters.excluidas.length > 0
+  ) {
+    console.log(
+      `OFICINAS_PREFERIDAS_CONFIG: ${selectedOfficeFilters.preferidas.join(", ") || "(ninguna)"}`,
+    );
+    console.log(
+      `OFICINAS_EXCLUIDAS_CONFIG: ${selectedOfficeFilters.excluidas.join(", ") || "(ninguna)"}`,
+    );
   }
 
   const datos = applyRuntimeFilters(await fetchData(), selectedOfficeFilters);
@@ -267,10 +298,8 @@ async function main() {
     return "Done";
   }
 
-  const results = await runLimited(
-    datos,
-    maxConcurrant,
-    (data, index) => getAppointment(data, proxies, index, index),
+  const results = await runLimited(datos, maxConcurrant, (data, index) =>
+    getAppointment(data, proxies, index, index),
   );
 
   return results.map((result) => {
