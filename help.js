@@ -5677,7 +5677,6 @@ export async function getAppointment(
         },
         { timeout: LONG_STEP_TIMEOUT_MS, polling: 500 },
       );
-      title = await page.title();
       if (
         await handleAcValidarExactCaducadoIfPresent(
           page,
@@ -6106,7 +6105,6 @@ export async function getAppointment(
       }
       // ######################### select a date ##############""
       // Check title
-      title = await page.title();
       await throwIfRequestRejected(page, "after navigation");
 
       await throwIfIcpSystemError(page, "after navigation");
@@ -6486,11 +6484,13 @@ export async function getAppointment(
         .catch(() => {});
       // Work here
       stage = "WAIT_CONFIRMATION";
-      console.log("#################### Bro bro I am here ########");
-
-      await sleep(90000);
-      await sleep(90000);
-      await sleep(90000);
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: "domcontentloaded" }),
+        cursor.click("#btnConfirmar", {
+          moveDelay: 0,
+          randomizeMoveDelay: false,
+        }),
+      ]);
       // await waitForManualOtpAndFinalConfirmation(page, data);
 
       await sendFinalAppointmentTelegramAndHold(
@@ -6498,6 +6498,11 @@ export async function getAppointment(
         data,
         "normal OTP confirmation",
       );
+      console.log("#################### Bro bro I am here ########");
+
+      await sleep(90000);
+      await sleep(90000);
+      await sleep(90000);
     } catch (error) {
       console.log("Check check check");
       await sleep(90000);

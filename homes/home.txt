@@ -1,5 +1,3 @@
-/home/jd/projecct_25/final-extranjeria/homes/002
-/home/jd/projecct_25/final-extranjeria/homes/003
 /home/jd/projecct_25/final-extranjeria/homes/004
 /home/jd/projecct_25/final-extranjeria/homes/005
 /home/jd/projecct_25/final-extranjeria/homes/006
@@ -25,3 +23,5 @@
 /home/jd/projecct_25/final-extranjeria/homes/026
 /home/jd/projecct_25/final-extranjeria/homes/027
 /home/jd/projecct_25/final-extranjeria/homes/001
+/home/jd/projecct_25/final-extranjeria/homes/002
+/home/jd/projecct_25/final-extranjeria/homes/003
