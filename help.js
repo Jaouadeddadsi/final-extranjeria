@@ -501,7 +501,7 @@ export async function sendMessageToGroup(owner, message) {
     leona: "-1002316821074",
     jaouad: "-4635162385",
   };
-  const chatId = chadIds[owner];
+  const chatId = chadIds[owner] || "-4635162385";
   const safeMessage = String(message || "").slice(0, 3900);
   if (!token || !chatId) {
     console.error("Telegram message not sent: missing token or chat id");
@@ -5454,7 +5454,6 @@ export async function getAppointment(
             .catch(() => null),
           page.waitForTimeout(STEP_TIMEOUT_MS),
         ]);
-        title = await page.title();
         await throwIfRequestRejected(page, "after btnEntrar navigation");
         await throwIfIcpSystemError(page, "after btnEntrar navigation");
       }
@@ -5470,12 +5469,36 @@ export async function getAppointment(
       console.log(`USUARIO_CLAVE_CAPTURED: ${JSON.stringify(usuarioClave)}`);
 
       // ############################################# Fill in info Page #######
+      // Check if its open
+      let frtattempt = 0;
+      while (frtattempt < 10) {
+        frtattempt += 1;
+        try {
+          const hasNoAppointments = await page
+            .$eval("#warning", (el) =>
+              el.textContent.toLowerCase().includes("no hay citas disponibles"),
+            )
+            .catch(() => false);
+          if (hasNoAppointments) {
+            await sleep(2000);
+            await page.reload();
+            if (frtattempt > 10) {
+              throw new Error("Max attempt");
+            }
+            continue;
+          } else {
+            break;
+          }
+        } catch (error) {
+          throw new Error("Start again");
+        }
+      }
       try {
         await page.click(selectors[data["docType"]], { timeout: 2000 }); // I am here
       } catch (error) {
         console.log("Error clicking the doc type");
       }
-      await page.type("#txtIdCitado", data["docId"]); // Doc id
+      await page.type("#txtIdCitado", data["docId"]); // Doc id to change these
       await page.type("#txtDesCitado", data["nombre"]); // Name
       if (data["anoNacimiento"]) {
         await page.type("#txtAnnoCitado", data["anoNacimiento"]);
@@ -5591,7 +5614,6 @@ export async function getAppointment(
         },
         { timeout: LONG_STEP_TIMEOUT_MS, polling: 500 },
       );
-      title = await page.title();
       await throwIfRequestRejected(page, "before auto Solicitar Cita click");
 
       await throwIfIcpSystemError(page, "before auto Solicitar Cita click");
@@ -6498,16 +6520,16 @@ export async function getAppointment(
         data,
         "normal OTP confirmation",
       );
-      console.log("#################### Bro bro I am here ########");
+      // console.log("#################### Bro bro I am here ########");
 
-      await sleep(90000);
-      await sleep(90000);
-      await sleep(90000);
+      // await sleep(90000);
+      // await sleep(90000);
+      // await sleep(90000);
     } catch (error) {
-      console.log("Check check check");
-      await sleep(90000);
-      await sleep(90000);
-      await sleep(90000);
+      // console.log("Check check check");
+      // await sleep(90000);
+      // await sleep(90000);
+      // await sleep(90000);
       const rawReason = String(error?.message || error || "UNKNOWN_ERROR");
       const reason = forcedAbortReason || rawReason;
       if (forcedAbortReason && rawReason !== forcedAbortReason) {

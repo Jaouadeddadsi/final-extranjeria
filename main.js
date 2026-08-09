@@ -65,13 +65,13 @@ const provinciesList = {
 };
 
 // Max concurrent workers
-const maxConcurrant = Number(process.env.MAX_CONCURRENT || 1);
+const maxConcurrant = Number(process.env.MAX_CONCURRENT || 8);
 
 // Put province names here, not URLs. Examples:
 // const provinciaNames = ["Barcelona"];
 // const provinciaNames = ["Madrid", "Soria"];
 // const provinciaNames = []; // all provinces
-const provinciaNames = ["murcia"]; //barcelona murcia
+const provinciaNames = ["barcelona"]; //barcelona murcia
 
 // Optional office filters. Put one word or part of each office name.
 // Preferidas: if any are set, only offices matching at least one word are accepted.
