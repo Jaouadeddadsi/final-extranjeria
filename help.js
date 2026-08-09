@@ -983,7 +983,7 @@ async function launchBrowserWithFingerprint(proxy, fixedPositionSlot = null) {
   ];
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     ...(chromeExecutablePath ? { executablePath: chromeExecutablePath } : {}),
     userDataDir: profileDir,
     env: {
